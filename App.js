@@ -1,20 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import WelcomePage from './src/features/Welcome/WelcomePage';
+import LoginPage from './src/features/Login/LoginPage';
+import { ThemeProvider } from './src/shared/context/ThemeContext';
+import useAppFont from './src/shared/hook/UseAppFont';
+import { serviceFactory } from './src/services/ServiceFactory';
+import { DepedencyProvider } from './src/shared/context/DepedencyContext';
+import ProductList from './src/features/Product/ProductList';
+import HomePage from './src/features/Home/HomePage';
+import { NavigationContainer } from '@react-navigation/native';
+import AppRouter from './src/navigation/AppRouter';
 
 export default function App() {
+    const fonts = useAppFont();
+    const services = serviceFactory();
+    if(!fonts){
+      return null;
+    }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <DepedencyProvider services={services}>
+      <ThemeProvider>
+        <NavigationContainer>
+          <AppRouter/>
+        </NavigationContainer>
+      </ThemeProvider>
+    </DepedencyProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
